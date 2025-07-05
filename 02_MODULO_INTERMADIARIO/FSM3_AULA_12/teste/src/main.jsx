@@ -9,9 +9,9 @@ import Semaforo from './Semaforo.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <Semaforo/>
     <ConcatName />
     <Nav />
-    <Semaforo />
     <App />
     <Footer />
   </StrictMode>,
