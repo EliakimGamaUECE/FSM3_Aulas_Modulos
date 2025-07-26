@@ -1,27 +1,26 @@
 // IMPORTAÇÕES E INSTANCIAÇÕES
 const express = require('express'); // import express from 'express';
-const nodemon = require('nodemon');
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-const livros =[];
 
-//MÉTODOS
+const livros = [];
 
-//MÉTODO GET
+//GET (LISTAR/PEGAR/MOSTRAR)  ----- já usei...
 app.get("/", (req, res) => {
     res.send(livros);
 });
 
-//MÉTODO POST   -----------------------JÁ FIZ, TESTATO E APROVADO!!!
+//POST (INSERIR/COLOCAR...)  ------- JÁ USEI...
 app.post("/", (req, res) => {
     const livro = req.body;
     livros.push(livro);
     res.send("Livro adicionado com sucesso!");
 });
 
-//MÉDUTO PUT
+
+//PUT Editar, alterar...
 app.put("/:id", (req, res) => {
     const id = parseInt(req.params.id);
     const index = livros.findIndex(livro => livro.id === id);
@@ -34,7 +33,8 @@ app.put("/:id", (req, res) => {
     }
 });
 
-//DELETE
+
+//DELETE Apagar, mandar para o espaço....
 app.delete("/:id", (req, res) => {
     const id = parseInt(req.params.id);
     const index = livros.findIndex(livro => livro.id === id);
@@ -43,7 +43,7 @@ app.delete("/:id", (req, res) => {
         livros.splice(index, 1);
         res.send("Livro deletado com sucesso!");
     } else {
-        res.status(404).send("Livro não encontra");
+        res.status(404).send("Livro não encontrado");
     }
 });
 
