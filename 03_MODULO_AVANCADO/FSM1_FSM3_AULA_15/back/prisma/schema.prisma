@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SubmissionStatus {
+PENDING
+APPROVED
+REJECTED
+}
+
+
+model User {
+id Int @id @default(autoincrement())
+name String
+createdAt DateTime @default(now())
+submissions Submission[]
+votes Vote[]
+}
+
+
+model Challenge {
+id Int @id @default(autoincrement())
+title String
+description String
+deadline DateTime
+points Int @default(10)
+maxSubmissionsPerUser Int @default(1)
+createdAt DateTime @default(now())
+submissions Submission[]
+}
+
+
+model Submission {
+id Int @id @default(autoincrement())
+url String
+note String?
+status SubmissionStatus @default(PENDING)
+createdAt DateTime @default(now())
+userId Int
+challengeId Int
+user User @relation(fields: [userId], references: [id])
+challenge Challenge @relation(fields: [challengeId], references: [id])
+votes Vote[]
+
+
+@@unique([userId, challengeId, url])
+}
+
+
+model Vote {
+id Int @id @default(autoincrement())
+value Int // +1
+createdAt DateTime @default(now())
+userId Int
+submissionId Int
+user User @relation(fields: [userId], references: [id])
+submission Submission @relation(fields: [submissionId], references: [id])
+
+
+@@unique([userId, submissionId])
+}
